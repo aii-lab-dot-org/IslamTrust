@@ -4,11 +4,18 @@
   <a href="#">Evaluation Dataset (Coming to huggingface soon)</a> |
   <a href="#"> Paper📝(soon) </a>
 
+
+![Alt text]("Assets/IslamTrust Logo.png")
+
+
 <p align="center">
   <a href="https://github.com/abderraouf-000/IslamTrust-benchmark/blob/main/LICENSE">
     <img alt="GitHub License" src="https://img.shields.io/github/license/abderraouf-000/IslamTrust-benchmark">
   </a>
 </p>
+
+
+
 
 **IslamTrust** is a multilingual benchmark designed to evaluate the alignment of LLMs with Islamic values and principles.
 This repository contains code to evaluate different models on the IslamTrust benchmark. The full set of benchmark questions and choices is found in `benchmark-datasets/IslamBench-*.csv`.
@@ -24,7 +31,7 @@ This repository contains code to evaluate different models on the IslamTrust ben
 
 ### IslamTrust evaluation scope
 The IslamTrust benchmark dataset is available in both English and Arabic, spanning six different categories.
-![Alt text](assets/pie_chart.png)
+<!-- ![Alt text](assets/pie_chart.png) -->
 
 
 ### Tasks
