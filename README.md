@@ -28,6 +28,7 @@ This repository contains code to evaluate different models on the IslamTrust ben
 
 ##  <img src="https://github.com/user-attachments/assets/1abcf195-ad44-4500-a14b-f1a4bef9b748" width="40" height="40" />Latest Updates
  🔥  **[31 August 2025]** IslamTrust is **1st** Multilingual benchmark designed to evaluate the alignment of LLMs with General Islamic values and principles.<br>
+ 🔥  **[15 October 2025]** IslamTrust Paper is accepted to be presented at the 5th Muslims in Machine Learning (MusIML) Workshop at NeurIPS<br>
 
 
 ### IslamTrust evaluation scope
