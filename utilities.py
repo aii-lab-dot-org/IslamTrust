@@ -2,6 +2,8 @@ from datasets import load_dataset
 import torch
 import torch.nn.functional as F
 import numpy as np
+import ast
+
 
 
 
@@ -22,8 +24,9 @@ def parse_indices(indices):
 
 
 
-def get_answer_logprob(model, tokenizer, question, answer,chat = False):
-    if chat:
+def get_answer_logprob(model, tokenizer, question, answer,chat = True):
+        
+    if chat and hasattr(tokenizer, "chat_template") and tokenizer.chat_template is not None:
         return get_answer_logprob_chat_template(model, tokenizer, question, answer);
     else:
         return get_answer_logprob_no_chat(model, tokenizer, question, answer);
@@ -39,12 +42,7 @@ def get_answer_logprob_no_chat(model, tokenizer, question, answer):
     
     prompt = f"{question}{answer}"
 
-    # messages = [
-    # {"role": "user", "content": prompt},
-    # ];
-    
-    # prompt = f"Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request, you should provide a response to the user's query.\n\n### Instruction:\n{question}\n\n### Response: {answer}";
-    
+
     
     inputs = tokenizer(prompt, return_tensors="pt", padding=True)
     
@@ -56,13 +54,11 @@ def get_answer_logprob_no_chat(model, tokenizer, question, answer):
         logits = outputs.logits
     
     # Calculate log-probabilities for the answer tokens
+
     # We need to identify which tokens correspond to the answer
 
     
     question_part = f"{question}";
-
-    
-    # question_part = f"Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request, you should provide a response to the user's query.\n\n### Instruction:\n{question}\n\n### Response: ";
     
     question_tokens = tokenizer(question_part, return_tensors="pt")
     question_length = question_tokens['input_ids'].shape[1]
@@ -92,12 +88,15 @@ def get_answer_logprob_chat_template(model, tokenizer, question, answer):
     if not answer:
         return float('-inf')
         
-    full_response = answer.strip()
+    full_response = answer.strip();
+
     messages = [
         {"role": "user", "content": question.strip()},
         {"role": "assistant", "content": full_response},
     ]
 
+
+    
     # Tokenize full prompt using chat template
     inputs = tokenizer.apply_chat_template(
         messages,
@@ -118,6 +117,7 @@ def get_answer_logprob_chat_template(model, tokenizer, question, answer):
     # Get where the assistant's answer starts
     # Tokenize the user-only message to get its length
     user_only_messages = [{"role": "user", "content": question.strip()}]
+
     user_only_tokens = tokenizer.apply_chat_template(
         user_only_messages,
         add_generation_prompt=True, 
@@ -125,6 +125,7 @@ def get_answer_logprob_chat_template(model, tokenizer, question, answer):
         return_dict=True,
         tokenize=True,
     )["input_ids"][0]
+    
 
     answer_start = user_only_tokens.shape[0] 
     answer_token_ids = input_ids[answer_start:]
@@ -147,10 +148,10 @@ def get_answer_logprob_chat_template(model, tokenizer, question, answer):
 
     
 
+
 def evaluate_mc1_question(model, tokenizer, question, choices, correct_answer_index):
     """Evaluate a single MC1 question using log-probability scoring"""
     log_probs = []
-    
     for choice in choices:
         log_prob = get_answer_logprob(model, tokenizer, question, choice, True)
         log_probs.append(log_prob)
@@ -171,20 +172,29 @@ def evaluate_mc1_question(model, tokenizer, question, choices, correct_answer_in
 
 
 
-def load_islamTrust_mc1_dataset(data_directory):
 
-    dataset = load_dataset("csv" ,data_files= data_directory)['train']
-    questions = []
+
+
+def load_islamTrust_mc1_dataset(data_directory, language = "Arabic"):
+
+
+    dataset = load_dataset(data_directory)[language];
+
+
+    questions = [];
+
+
     for item in dataset:
-        choices = []
-        choices.extend([item['Choice1'],item['Choice2'],item['Choice3'],item['Choice4']]);
+        
         if item['Question']:
+
             questions.append({
                 'question': item['Question'],
-                'choices': choices,
-                'correct_answer_index': int(item['Answer'])-1, # Find the correct answer
+                'choices': ast.literal_eval(item['choices']),
+                'correct_answer_index': int(item['Correct_choice'])-1, # Find the correct answer
                 'Type':item['Type'],
             })
-        
-    print(f"Loaded {len(questions)} MC1 questions")
+
+    print(f"Loaded {len(questions)} {language} MC1 questions");
+    print(questions)
     return questions

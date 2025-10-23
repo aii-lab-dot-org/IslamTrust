@@ -13,8 +13,8 @@ from huggingface_hub import login
 def get_args():
     parser = argparse.ArgumentParser(description="Evaluate IslamTrust MC1 benchmark")
     parser.add_argument('--indices', type=str, default=None, help='Indices to evaluate (comma separated or range)')
-    parser.add_argument('--indicesMod', type=int, default=1, help='Modulo for distributed evaluation')
-    parser.add_argument('--indicesRemainder', type=int, default=0, help='Remainder for distributed evaluation')
+    parser.add_argument('--indicesMod', type=int, default=1, help='')
+    parser.add_argument('--indicesRemainder', type=int, default=0, help='')
     parser.add_argument('--outDir', type=str, default='results', help='Directory to save results')
     parser.add_argument('--token', type=str, required=True, help='Authentication token')
     parser.add_argument('--model_name', type=str, default='meta-llama/Llama-3.1-8B-Instruct', help='Model name or path')
@@ -22,9 +22,10 @@ def get_args():
     parser.add_argument('--device', type=str, default='cuda', help='Device to use (e.g., cuda or cpu)')
     parser.add_argument('--batch_size', type=int, default=1, help='Batch size for evaluation')
     parser.add_argument('--max_length', type=int, default=512, help='Maximum sequence length')
-    parser.add_argument('--enable_quantization', type=int, default=True, help='Loading quantized model or not')
+    parser.add_argument('--enable_quantization', type=bool, default=True, help='Loading quantized model or not')
     parser.add_argument('--bits', type=int, default=4, help='Quantization bits (4 or 8)')
-    parser.add_argument('--data_directory', type=str, default="IslamTrust-benchmark/benchmark-datasets/IslamBench-Arabic.csv", help='Path to the dataset CSV file')
+    parser.add_argument('--data_directory', type=str, default="Abderraouf000/IslamTrust-benchmark", help='Path to the dataset CSV file')
+    parser.add_argument('--language', type=str, default = "Arabic", help = "Benchmark language")
     
     return parser.parse_args()
 
@@ -43,22 +44,29 @@ def main():
 
 
     args = get_args();
+    
+    args.outDir = args.outDir + f"/{args.model_name}-{args.language}";
 
     os.makedirs(args.outDir, exist_ok=True)
 
     token = args.token
 
-    login(token=token)
-    model_name = args.model_name
-    tokenizer_name = args.tokenizer_name
-    
 
+
+    login(token=token);
+
+    model_name = args.model_name;
+    
+    tokenizer_name = args.tokenizer_name;
+    
     # Load model and tokenizer
     if args.enable_quantization:
         if args.bits == 4:
             quantization_config = BitsAndBytesConfig(load_in_4bit=True,
                                                      bnb_4bit_quant_type='nf4',
+                                                     bnb_4bit_use_double_quant=True,
                                                      bnb_4bit_compute_type=torch.float16)   
+            
         elif args.bits == 8:
             quantization_config = BitsAndBytesConfig(load_in_8bit=True)
         else:
@@ -75,16 +83,27 @@ def main():
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name);
 
+
+
     model.eval();
 
-    tokenizer.pad_token = tokenizer.eos_token
 
-    questions = load_islamTrust_mc1_dataset(data_directory=args.data_directory);
     
-    category_number = {"Misconceptions":0,"General":0,"Ruling":0,"Extraordinary events":0,"Other religions":0,"Different opinions":0};
+    tokenizer.pad_token = tokenizer.eos_token;
+
+
+
+    questions = load_islamTrust_mc1_dataset(data_directory=args.data_directory, language = args.language);
     
+
+    category_number = {"Misconceptions":0,"General":0,"Islamically discouraged":0,"Extraordinary events":0,"Other faiths":0,"Different Islamic opinions":0};
+    
+
+
     for i, item in enumerate(questions):
         category_number[item['Type']] += 1;
+
+
 
     indices = parse_indices(args.indices) if args.indices is not None else list(range(len(questions)));
 
@@ -94,12 +113,14 @@ def main():
 
     total_predictions = 0;
 
-    result_category = {"Misconceptions":0,"General":0,"Ruling":0,"Extraordinary events":0,"Other religions":0,"Different opinions":0};
+    result_category = {"Misconceptions":0,"General":0,"Islamically discouraged":0,"Extraordinary events":0,"Other faiths":0,"Different Islamic opinions":0};
 
     question_length = len(questions);
 
+
     with torch.no_grad():
-        with torch.cuda.amp.autocast('cuda'):
+        
+        with torch.amp.autocast('cuda'):
             
             for idx in tqdm.tqdm(indices):
                 if idx >= question_length:
@@ -117,8 +138,8 @@ def main():
                     continue
                 
                 question_data = questions[idx];
-                
-                
+                                
+
                 # Evaluate the question
                 result = evaluate_mc1_question(
                     model, tokenizer, 
@@ -126,15 +147,12 @@ def main():
                     question_data['choices'], 
                     question_data['correct_answer_index']
                 );
-
-                # print(question_data)
                 
                 # Track accuracy
                 correct_predictions += result['is_correct']
                 total_predictions += 1;
                 result_category[question_data['Type']] += float(result['is_correct'])
 
-                print(result_category);
                 
                 # Save result
                 save_dict = {
@@ -149,9 +167,6 @@ def main():
                     'log_probs': [float(lp) for lp in result['log_probs']],
                     'accuracy_so_far': float(correct_predictions / total_predictions)
                 }
-
-
-                print(save_dict);
                 
                 with open(os.path.join(args.outDir, f'{idx}.json'), 'w') as f:
                     json.dump(save_dict, f, indent=2)
@@ -163,8 +178,14 @@ def main():
                     print(f"Progress: {total_predictions} questions, Accuracy: {correct_predictions/total_predictions:.3f}")
 
     # Final accuracy calculation
-    final_accuracy = float(correct_predictions / total_predictions) if total_predictions > 0 else 0
+    final_accuracy = float(correct_predictions / total_predictions) if total_predictions > 0 else 0;
+
     print(f"Final IslamTrust MC1 Accuracy: {final_accuracy:.3f} ({correct_predictions}/{total_predictions})");
+
+
+    print('Number of samples in each category is : ',category_number)
+    print('Per category results',result_category);
+
 
 
 

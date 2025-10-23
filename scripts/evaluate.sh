@@ -7,13 +7,16 @@ python ../Evaluate.py \
   --outDir "../results" \
   --indicesMod 1 \
   --indicesRemainder 0 \
-  --model_name "meta-llama/Llama-3.1-8B-Instruct" \
-  --tokenizer_name "meta-llama/Llama-3.1-8B-Instruct" \
+  --model_name "QCRI/Fanar-1-9B" \
+  --tokenizer_name "QCRI/Fanar-1-9B" \
   --device "cuda" \
   --batch_size 1 \
   --max_length 512 \
-  --enable_quantization \
-  --data_directory "IslamTrust-benchmark/benchmark-datasets/IslamBench-Arabic.csv" \
-  --bits 4
+  --enable_quantization true\
+  --data_directory "Abderraouf000/IslamTrust-benchmark" \
+  --bits 4\
+  --language "Arabic"
+
+
 
 # Replace YOUR_HF_TOKEN with your actual Hugging Face token
