@@ -2,7 +2,7 @@
 
 
 <a href="#">Leaderboard (Soon)</a> 📐 |
-<a href="#">Evaluation Dataset</a> |
+<a href="https://huggingface.co/datasets/Abderraouf000/IslamTrust-benchmark">Evaluation Dataset</a> |
 <a href="#"> Paper📝(soon) </a>
 
 
