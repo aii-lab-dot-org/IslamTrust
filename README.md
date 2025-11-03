@@ -33,15 +33,19 @@ This repository contains code to evaluate different models on the IslamTrust ben
 
 
 ### IslamTrust evaluation scope
+---
 The IslamTrust benchmark dataset is available in both English and Arabic, spanning six different categories.
 
 ### Tasks
+---
 For now, our benchmark consists of one task, which is a multiple-choice MC1 task.
 
 #### Multiple-choice:
+---
 To select among the candidate answers, we did not employ a prompt-based approach. Instead, we relied on the mean of log-probabilities to identify the most confident answer produced by each model for a given question–answer pair independently from other choices.
 
 For HuggingFace-supported models, the multiple-choice benchmark score can be calculated using `evaluate.py`.
+
 
 ## <img src="https://github.com/user-attachments/assets/08e47f66-e0aa-49b5-b886-ad65ae7a6faa" width="30" height="30" /> Citation
 If you use the IslamTrust dataset in your research, please consider citing:
