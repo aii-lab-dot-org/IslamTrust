@@ -3,7 +3,7 @@
 
 <a href="#">Leaderboard (Soon)</a> 📐 |
 <a href="https://huggingface.co/datasets/Abderraouf000/IslamTrust-benchmark">Evaluation Dataset</a> |
-<a href="#"> Paper📝(soon) </a>
+<a href="https://openreview.net/pdf?id=PBcv90iKFB"> Paper📝(soon) </a>
 
 
 <p align="center">
@@ -23,8 +23,8 @@ This repository contains code to evaluate different models on the IslamTrust ben
 
 
 **Authors**: <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&user=G-u4OPAAAAAJ">Abderraouf Lahmar</a>, 
-<a href="https://scholar.google.com/citations?user=RRMOwEMAAAAJ&hl=en&oi=ao">Arafat Md Easin</a>
-, <a href = "https://scholar.google.com/citations?hl=fr&user=FM-8ArsAAAAJ&view_op=list_works&sortby=pubdate">Farou Zakaria</a> , <a href = "https://scholar.google.com/citations?user=L8em2YoAAAAJ&hl=en">Mufti Mahmud </a>.
+<a href="https://scholar.google.com/citations?user=RRMOwEMAAAAJ&hl=en&oi=ao">Arafat Md Easin</a>, 
+<a href = "https://scholar.google.com/citations?hl=fr&user=FM-8ArsAAAAJ&view_op=list_works&sortby=pubdate">Farou Zakaria</a> , <a href = "https://scholar.google.com/citations?user=L8em2YoAAAAJ&hl=en">Mufti Mahmud </a>.
 
 
 ## <img src="https://github.com/user-attachments/assets/1abcf195-ad44-4500-a14b-f1a4bef9b748" width="40" height="40" />Latest Updates
@@ -49,3 +49,9 @@ For HuggingFace-supported models, the multiple-choice benchmark score can be cal
 
 ## <img src="https://github.com/user-attachments/assets/08e47f66-e0aa-49b5-b886-ad65ae7a6faa" width="30" height="30" /> Citation
 If you use the IslamTrust dataset in your research, please consider citing:
+
+@inproceedings{lahmar2025islamtrust,
+  title={IslamTrust: A Benchmark for LLMs Alignment with Islamic Values},
+  author={Lahmar, Abderraouf and Arafat, Md Easin and Farou, Zakarya and Mahmud, Mufti},
+  booktitle={5th Muslims in ML Workshop co-located with NeurIPS 2025}
+}\]\
