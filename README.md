@@ -1,4 +1,4 @@
-<h1>IslamTrust: A Benchmark for LLMs Alignment with Islamic Values</h1>
+<h1>IslamTrust: A Benchmark for LLMs Alignment with Islamic Values</h1> 
 
 
 <a href="#">Leaderboard (Soon)</a> 📐 |
@@ -22,9 +22,11 @@
 This repository contains code to evaluate different models on the IslamTrust benchmark. The full set of benchmark questions and choices is found in <a href = "https://huggingface.co/datasets/Abderraouf000/IslamTrust-benchmark">HuggingFace</a>.
 
 
-**Authors**: <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&user=G-u4OPAAAAAJ">Abderraouf Lahmar</a>, 
+**Authors**: 
+<a href="https://scholar.google.com/citations?view_op=list_works&hl=en&user=G-u4OPAAAAAJ">Abderraouf Lahmar</a>, 
 <a href="https://scholar.google.com/citations?user=RRMOwEMAAAAJ&hl=en&oi=ao">Arafat Md Easin</a>, 
-<a href = "https://scholar.google.com/citations?hl=fr&user=FM-8ArsAAAAJ&view_op=list_works&sortby=pubdate">Farou Zakaria</a> , <a href = "https://scholar.google.com/citations?user=L8em2YoAAAAJ&hl=en">Mufti Mahmud </a>.
+<a href = "https://scholar.google.com/citations?hl=fr&user=FM-8ArsAAAAJ&view_op=list_works&sortby=pubdate">Farou Zakaria</a> , 
+<a href = "https://scholar.google.com/citations?user=L8em2YoAAAAJ&hl=en">Mufti Mahmud </a>.
 
 
 ## <img src="https://github.com/user-attachments/assets/1abcf195-ad44-4500-a14b-f1a4bef9b748" width="40" height="40" />Latest Updates
