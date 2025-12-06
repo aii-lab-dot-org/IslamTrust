@@ -1,9 +1,10 @@
 <h1>IslamTrust: A Benchmark for LLMs Alignment with Islamic Values</h1> 
 
 
-<a href="#">Leaderboard (Soon)</a> 📐 |
-<a href="https://huggingface.co/datasets/Abderraouf000/IslamTrust-benchmark">Evaluation Dataset</a> |
-<a href="https://openreview.net/pdf?id=PBcv90iKFB"> Paper📝</a>
+<a href="#">Leaderboard (Coming Soon)</a> 📊 |
+<a href="https://huggingface.co/datasets/Abderraouf000/IslamTrust-benchmark">Evaluation Dataset</a> 📂 |
+<a href="https://openreview.net/pdf?id=PBcv90iKFB">Paper 📝</a> |
+<a href="https://neurips.cc/virtual/2025/loc/san-diego/133012">Poster 📌</a>
 
 
 <p align="center">
